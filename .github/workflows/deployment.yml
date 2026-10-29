@@ -12,19 +12,24 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 2. Continuous Integration (CI)
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    - name: Run Automated Tests
-      run: pytest test_app.py
+        # 2. Continuous Integration (CI)
+        - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # Explicitly install pytest in the runner environment environment
+          pip install pytest 
+          
+      - name: Run Automated Tests
+        run: |
+          # Use 'python -m pytest' to guarantee it calls the environment module directly
+          python -m pytest test_app.py
+  
 
     # 3. Build & Push Docker Image
     - name: Log in to Docker Hub
